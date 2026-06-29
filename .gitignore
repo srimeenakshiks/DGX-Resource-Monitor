@@ -1,40 +1,64 @@
 # Python
+
 __pycache__/
 *.py[cod]
 *.so
 
 # Virtual environments
+
 .venv/
 venv/
 env/
 
 # Jupyter
+
 .ipynb_checkpoints/
 
-# Gradio
+# Logs
+
+logs/*.log
+
+# Temporary files
+
+chart.html
+
+# Gradio cache
+
 .gradio/
 
-# Databases
-*.db
-*.sqlite
-*.sqlite3
+# IDE
 
-# Logs
-logs/
-*.log
-
-# Runtime data
-data/*.csv
-data/*.db
-
-# VS Code
 .vscode/
-
-# PyCharm
 .idea/
 
-# macOS
-.DS_Store
+# OS
 
-# Windows
+.DS_Store
 Thumbs.db
+
+# Python environment
+
+.python-version
+
+# SQLite
+
+*.db-shm
+*.db-wal
+
+# Cache
+
+.pytest_cache/
+.mypy_cache/
+
+# Bytecode
+
+*.pyo
+
+# Build
+
+build/
+dist/
+
+# Secrets
+
+.env
