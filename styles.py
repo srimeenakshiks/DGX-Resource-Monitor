@@ -216,6 +216,12 @@ GPU CARD
 
     transition:.25s;
 
+    margin-bottom:24px;
+
+    padding:22px;
+
+    border-radius:18px;
+
 }
 
 .gpu-card:hover{

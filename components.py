@@ -6,6 +6,11 @@ inside Gradio HTML components.
 """
 
 from datetime import datetime
+from zoneinfo import ZoneInfo
+
+now = datetime.now(
+    ZoneInfo("Asia/Kolkata")
+).strftime("%d %b %Y • %H:%M:%S")
 
 
 # ==========================================================

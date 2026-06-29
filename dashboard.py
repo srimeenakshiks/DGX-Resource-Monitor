@@ -1,0 +1,122 @@
+"""
+Dashboard layout.
+
+This module assembles every dashboard section into
+one reusable Gradio Blocks interface.
+"""
+
+import gradio as gr
+
+from styles import CSS
+
+from sections.header import build_header
+from sections.summary import build_summary
+from sections.gpu import build_gpu_section
+
+
+# ==========================================================
+# Dashboard
+# ==========================================================
+
+def create_dashboard():
+
+    with gr.Blocks(
+        title="DGX Resource Monitor",
+        fill_width=True,
+    ) as demo:
+
+        # --------------------------------------------------
+        # Header
+        # --------------------------------------------------
+
+        header = gr.HTML(
+            value=build_header()
+        )
+
+        # --------------------------------------------------
+        # Summary
+        # --------------------------------------------------
+
+        summary = gr.HTML(
+            value=build_summary()
+        )
+
+        # --------------------------------------------------
+        # GPU Overview
+        # --------------------------------------------------
+
+        gpu_section = gr.HTML(
+            value=build_gpu_section()
+        )
+
+        # --------------------------------------------------
+        # Analytics
+        # --------------------------------------------------
+
+        with gr.Group():
+
+            gr.Markdown(
+                "## Analytics"
+            )
+
+            analytics_placeholder = gr.Markdown(
+                "_Coming soon..._"
+            )
+
+        # --------------------------------------------------
+        # Storage
+        # --------------------------------------------------
+
+        with gr.Group():
+
+            gr.Markdown(
+                "## Storage"
+            )
+
+            storage_placeholder = gr.Markdown(
+                "_Coming soon..._"
+            )
+
+        # --------------------------------------------------
+        # Users
+        # --------------------------------------------------
+
+        with gr.Group():
+
+            gr.Markdown(
+                "## Users"
+            )
+
+            users_placeholder = gr.Markdown(
+                "_Coming soon..._"
+            )
+
+        # --------------------------------------------------
+        # Processes
+        # --------------------------------------------------
+
+        with gr.Group():
+
+            gr.Markdown(
+                "## Processes"
+            )
+
+            process_placeholder = gr.Markdown(
+                "_Coming soon..._"
+            )
+
+        # --------------------------------------------------
+        # Notebooks
+        # --------------------------------------------------
+
+        with gr.Group():
+
+            gr.Markdown(
+                "## Running Notebooks"
+            )
+
+            notebook_placeholder = gr.Markdown(
+                "_Coming soon..._"
+            )
+
+    return demo
