@@ -6,7 +6,6 @@ DB_PATH = Path("data/dashboard.db")
 
 def get_connection():
     DB_PATH.parent.mkdir(exist_ok=True)
-
     return sqlite3.connect(DB_PATH)
 
 
@@ -15,18 +14,18 @@ def initialize_database():
     conn = get_connection()
     cur = conn.cursor()
 
-    # ---------------- GPU ---------------- #
+    # ==========================================================
+    # GPU HISTORY
+    # ==========================================================
 
     cur.execute("""
     CREATE TABLE IF NOT EXISTS gpu_history (
 
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-
-        timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+        timestamp TEXT,
 
         gpu INTEGER,
 
-        name TEXT,
+        gpu_name TEXT,
 
         memory_used REAL,
 
@@ -43,62 +42,22 @@ def initialize_database():
     )
     """)
 
-    # ---------------- CPU ---------------- #
+    # ==========================================================
+    # PROCESS HISTORY
+    # ==========================================================
 
     cur.execute("""
-    CREATE TABLE IF NOT EXISTS cpu_history (
+    CREATE TABLE IF NOT EXISTS process_history (
 
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-
-        timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
-
-        cpu_percent REAL,
-
-        ram_used REAL,
-
-        ram_total REAL,
-
-        ram_percent REAL
-
-    )
-    """)
-
-    # ---------------- Storage ---------------- #
-
-    cur.execute("""
-    CREATE TABLE IF NOT EXISTS storage_history (
-
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-
-        timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
-
-        mount TEXT,
-
-        total REAL,
-
-        used REAL,
-
-        free REAL,
-
-        percent REAL
-
-    )
-    """)
-
-    # ---------------- GPU Processes ---------------- #
-
-    cur.execute("""
-    CREATE TABLE IF NOT EXISTS gpu_process_history (
-
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-
-        timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
-
-        student TEXT,
+        timestamp TEXT,
 
         gpu INTEGER,
 
         pid INTEGER,
+
+        student TEXT,
+
+        user TEXT,
 
         gpu_memory REAL,
 
@@ -108,29 +67,85 @@ def initialize_database():
 
         executable TEXT,
 
-        working_directory TEXT,
+        cwd TEXT,
 
         command TEXT
 
     )
     """)
 
-    # ---------------- Notebooks ---------------- #
+    # ==========================================================
+    # NOTEBOOK HISTORY
+    # ==========================================================
 
     cur.execute("""
     CREATE TABLE IF NOT EXISTS notebook_history (
-
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-
-        timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
-
+    
+        timestamp TEXT,
+    
         kernel_id TEXT,
-
-        notebook TEXT,
-
+    
         student TEXT,
+    
+        notebook TEXT,
+    
+        status TEXT,
+    
+        kernel_name TEXT,
+    
+        type TEXT
+    
+    )
+    """)
 
-        pid INTEGER
+    # ==========================================================
+    # STORAGE HISTORY
+    # ==========================================================
+
+    cur.execute("""
+    CREATE TABLE IF NOT EXISTS storage_history (
+
+        timestamp TEXT,
+
+        filesystem TEXT,
+
+        total REAL,
+
+        used REAL,
+
+        available REAL,
+
+        percent REAL,
+
+        mountpoint TEXT
+
+    )
+    """)
+
+    # ==========================================================
+    # CPU HISTORY
+    # ==========================================================
+
+    cur.execute("""
+    CREATE TABLE IF NOT EXISTS cpu_history (
+
+        timestamp TEXT,
+
+        cpu_percent REAL,
+
+        ram_percent REAL,
+
+        ram_used REAL,
+
+        ram_total REAL,
+
+        swap_percent REAL,
+
+        load1 REAL,
+
+        load5 REAL,
+
+        load15 REAL
 
     )
     """)
@@ -138,9 +153,8 @@ def initialize_database():
     conn.commit()
     conn.close()
 
+    print("Database initialized.")
+
 
 if __name__ == "__main__":
-
     initialize_database()
-
-    print("Dashboard database created successfully.")
