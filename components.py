@@ -8,10 +8,6 @@ inside Gradio HTML components.
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
-now = datetime.now(
-    ZoneInfo("Asia/Kolkata")
-).strftime("%d %b %Y • %H:%M:%S")
-
 
 # ==========================================================
 # Header
@@ -19,13 +15,15 @@ now = datetime.now(
 
 def hero_header():
 
-    now = datetime.now().strftime("%d %b %Y • %H:%M:%S")
+    now = datetime.now(
+        ZoneInfo("Asia/Kolkata")
+    ).strftime("%d %b %Y • %H:%M:%S")
 
     return f"""
     <div class="hero">
 
         <div class="hero-title">
-            🖥 DGX Resource Monitor
+            DGX Resource Monitor
         </div>
 
         <div class="hero-subtitle">
@@ -35,7 +33,7 @@ def hero_header():
         <div class="hero-status">
 
             <div class="live-chip">
-                ● LIVE
+                LIVE
             </div>
 
             <div class="time-chip">
@@ -225,7 +223,7 @@ def storage_card(row):
 
         <div class="gpu-title">
 
-            💾 {row["mountpoint"]}
+            {row["mountpoint"]}
 
         </div>
 
@@ -266,7 +264,9 @@ def storage_card(row):
 
 def footer():
 
-    year = datetime.now().year
+    year = datetime.now(
+        ZoneInfo("Asia/Kolkata")
+    ).year
 
     return f"""
 

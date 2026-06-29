@@ -12,10 +12,19 @@ GENERAL
 ============================================================ */
 
 .gradio-container{
+
+    width:100% !important;
+
     max-width:1800px !important;
-    margin:auto;
+
+    margin:0 auto !important;
+
+    padding:25px !important;
+
     background:#0d1117;
+
     color:#f0f6fc;
+
     font-family:Inter,Segoe UI,Arial,sans-serif;
 }
 
@@ -199,6 +208,22 @@ SUMMARY CARDS
 
 }
 
+/* ============================================================
+SUMMARY GRID
+============================================================ */
+
+.metric-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+
+    gap:20px;
+
+    margin-bottom:30px;
+
+}
+
 
 /* ============================================================
 GPU CARD
@@ -207,21 +232,21 @@ GPU CARD
 .gpu-card{
 
     background:#161b22;
-
     border:1px solid #30363d;
 
     border-radius:20px;
+    padding:24px;
 
-    padding:18px;
+    display:flex;
+    flex-direction:column;
+
+    justify-content:flex-start;
+
+    min-height:350px;
 
     transition:.25s;
 
-    margin-bottom:24px;
-
-    padding:22px;
-
-    border-radius:18px;
-
+    box-sizing:border-box;
 }
 
 .gpu-card:hover{
@@ -260,10 +285,13 @@ GPU CARD
 
     justify-content:space-between;
 
-    margin-top:8px;
+    align-items:center;
 
-    font-size:14px;
+    margin-top:10px;
 
+    min-height:28px;
+
+    font-size:15px;
 }
 
 .progress{
@@ -293,6 +321,32 @@ GPU CARD
     );
 
     transition:width .5s ease;
+
+}
+
+/* ============================================================
+GPU GRID
+============================================================ */
+
+.gpu-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,minmax(0,1fr));
+
+    gap:24px;
+
+    margin-top:20px;
+
+}
+
+@media (max-width:1100px){
+
+.gpu-grid{
+
+    grid-template-columns:1fr;
+
+}
 
 }
 
