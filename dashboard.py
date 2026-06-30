@@ -14,6 +14,14 @@ from sections.summary import build_summary
 from sections.gpu import build_gpu_section
 
 
+def refresh_dashboard():
+
+    return (
+        build_header(),
+        build_summary(),
+        build_gpu_section(),
+    )
+
 # ==========================================================
 # Dashboard
 # ==========================================================
@@ -29,25 +37,19 @@ def create_dashboard():
         # Header
         # --------------------------------------------------
 
-        header = gr.HTML(
-            value=build_header()
-        )
+        header = gr.HTML(build_header())
 
         # --------------------------------------------------
         # Summary
         # --------------------------------------------------
 
-        summary = gr.HTML(
-            value=build_summary()
-        )
+        summary = gr.HTML(build_summary())
 
         # --------------------------------------------------
         # GPU Overview
         # --------------------------------------------------
 
-        gpu_section = gr.HTML(
-            value=build_gpu_section()
-        )
+        gpu_section = gr.HTML(build_gpu_section())
 
         # --------------------------------------------------
         # Analytics
@@ -119,4 +121,15 @@ def create_dashboard():
                 "_Coming soon..._"
             )
 
+        timer = gr.Timer(value=1)
+        
+        timer.tick(
+            fn=refresh_dashboard,
+            outputs=[
+                header,
+                summary,
+                gpu_section,
+            ],
+        )
+    
     return demo
