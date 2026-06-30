@@ -62,3 +62,15 @@ dist/
 # Secrets
 
 .env
+
+# Runtime database
+data/dashboard.db
+data/dashboard_backup.db
+
+# SQLite temporary files
+data/*.db-wal
+data/*.db-shm
+
+# Python cache
+__pycache__/
+*.pyc

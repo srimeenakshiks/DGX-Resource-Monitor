@@ -427,26 +427,6 @@ def get_health():
     
     }
 
-def get_latest_processes():
-
-    return query("""
-
-        SELECT *
-
-        FROM process_history
-
-        WHERE timestamp=(
-
-            SELECT MAX(timestamp)
-
-            FROM process_history
-
-        )
-
-        ORDER BY gpu
-
-    """)
-
 def get_gpu_count():
 
     return int(query("""
@@ -497,7 +477,7 @@ def get_latest_processes():
 
         FROM process_history
 
-        WHERE timestamp = (
+        WHERE timestamp=(
 
             SELECT MAX(timestamp)
 
@@ -505,7 +485,8 @@ def get_latest_processes():
 
         )
 
-        ORDER BY gpu
+        ORDER BY gpu,
+                 gpu_memory DESC
 
     """)
 
@@ -551,26 +532,6 @@ def get_dashboard_data():
 
     }
 
-def get_latest_processes():
-
-    return query("""
-
-        SELECT *
-
-        FROM process_history
-
-        WHERE timestamp=(
-
-            SELECT MAX(timestamp)
-
-            FROM process_history
-
-        )
-
-        ORDER BY gpu,
-                 gpu_memory DESC
-
-    """)
 
 # ======================================================
 # ACTIVE NOTEBOOKS
@@ -584,7 +545,7 @@ def get_active_notebooks():
 
         FROM notebook_history
 
-        WHERE timestamp = (
+        WHERE timestamp=(
 
             SELECT MAX(timestamp)
 
@@ -602,25 +563,89 @@ def get_active_notebooks():
     for student, group in notebooks.groupby("student"):
 
         notebook_list = []
+        folder_list = []
 
         for _, row in group.iterrows():
 
-            notebook = row.get("notebook", "")
+            notebook = row["notebook_name"]
 
             if notebook:
+                notebook_list.append(
+                    f"{notebook} ({row['kernel_name']})"
+                )
 
-                notebook_list.append(notebook)
+            folder = row["cwd"]
+
+            if folder and folder not in folder_list:
+                folder_list.append(folder)
 
         grouped.append({
 
             "student": student,
 
-            "kernel": group["kernel_name"].iloc[0],
-
             "status": group["status"].iloc[0],
 
             "notebooks": notebook_list,
 
+            "folders": folder_list,
+
         })
 
     return pd.DataFrame(grouped)
+
+# ======================================================
+# ACTIVE USERS
+# ======================================================
+
+def get_active_users():
+
+    notebooks = get_active_notebooks()
+    processes = get_latest_processes()
+
+    if notebooks.empty:
+        return notebooks
+
+    rows = []
+
+    for _, nb in notebooks.iterrows():
+
+        student = nb["student"]
+
+        proc = processes[
+            processes["student"] == student
+        ]
+
+        rows.append({
+
+            "student": student,
+
+            "status": nb["status"],
+
+            "kernel": ", ".join(
+                sorted({
+                    n.split("(")[-1][:-1]
+                    for n in nb["notebooks"]
+                    if "(" in n
+                })
+            ),
+
+            "notebooks": nb["notebooks"],
+
+            "folders": nb["folders"],
+
+            "gpu_list": sorted(
+                proc["gpu"].unique().tolist()
+            ) if not proc.empty else [],
+
+            "gpu_memory": proc["gpu_memory"].sum()
+            if not proc.empty else 0,
+
+            "cpu": proc["cpu"].sum()
+            if not proc.empty else 0,
+
+            "ram": proc["ram"].sum()
+            if not proc.empty else 0,
+
+        })
+
+    return pd.DataFrame(rows)

@@ -517,6 +517,64 @@ PROCESS GRID
 
 }
 
+.section-label{
+
+    margin-top:18px;
+
+    margin-bottom:8px;
+
+    font-size:13px;
+
+    font-weight:700;
+
+    color:#58a6ff;
+
+    text-transform:uppercase;
+
+    letter-spacing:.5px;
+
+}
+
+.notebook-item{
+
+    padding:8px 12px;
+
+    margin-bottom:8px;
+
+    background:#0d1117;
+
+    border:1px solid #30363d;
+
+    border-radius:10px;
+
+    color:white;
+
+    font-size:14px;
+
+    word-break:break-word;
+
+}
+
+.folder-item{
+
+    padding:8px 12px;
+
+    margin-bottom:8px;
+
+    background:#0d1117;
+
+    border:1px solid #30363d;
+
+    border-radius:10px;
+
+    color:#8b949e;
+
+    font-size:13px;
+
+    word-break:break-all;
+
+}
+
 .empty-card{
 
     padding:30px;

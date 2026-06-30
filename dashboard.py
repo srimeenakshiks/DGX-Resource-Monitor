@@ -12,8 +12,7 @@ from styles import CSS
 from sections.header import build_header
 from sections.summary import build_summary
 from sections.gpu import build_gpu_section
-from sections.process import build_process_section
-
+from sections.process import build_notebook_section
 
 def refresh_dashboard():
 
@@ -25,7 +24,7 @@ def refresh_dashboard():
     
         build_gpu_section(),
     
-        build_process_section(),
+        build_notebook_section(),
     
     )
 
@@ -105,28 +104,24 @@ def create_dashboard():
         # --------------------------------------------------
 
         with gr.Group():
-
-            gr.Markdown(
-                "## Processes"
-            )
-
-            process_section = gr.HTML(
-                build_process_section()
+            
+            notebook_section = gr.HTML(
+                build_notebook_section()
             )
 
         # --------------------------------------------------
         # Notebooks
         # --------------------------------------------------
 
-        with gr.Group():
+        #with gr.Group():
 
-            gr.Markdown(
-                "## Running Notebooks"
-            )
+         #   gr.Markdown(
+          #      "## Running Notebooks"
+          #  )
 
-            notebook_placeholder = gr.Markdown(
-                "_Coming soon..._"
-            )
+           # notebook_placeholder = gr.Markdown(
+            #    "_Coming soon..._"
+            #)
 
         timer = gr.Timer(value=1)
         
@@ -136,7 +131,7 @@ def create_dashboard():
                 header,
                 summary,
                 gpu_section,
-                process_section,
+                notebook_section,
             ],
         )
     

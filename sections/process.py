@@ -1,22 +1,22 @@
 """
-Live GPU Processes section.
+Active Notebook Sessions section.
 """
 
-from analytics import get_latest_processes
+from analytics import get_active_users
 from components import (
     section_header,
-    process_card,
+    user_card,
 )
 
 
-def build_process_section():
+def build_notebook_section():
 
-    df = get_latest_processes()
+    df = get_active_users()
 
     html = section_header(
-        "Running GPU Processes",
-        "Live GPU compute jobs currently running",
-        "process-section",
+        "Active Notebook Sessions",
+        "Live Jupyter notebooks currently connected to the DGX server",
+        "notebook-section",
     )
 
     html += '<div class="process-grid">'
@@ -25,14 +25,14 @@ def build_process_section():
 
         html += """
         <div class="empty-card">
-            No GPU processes detected.
+            No active notebook sessions.
         </div>
         """
 
     else:
 
         for _, row in df.iterrows():
-            html += process_card(row)
+            html += user_card(row)
 
     html += "</div>"
 

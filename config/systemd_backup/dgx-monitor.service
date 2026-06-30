@@ -1,0 +1,19 @@
+[Unit]
+Description=DGX Resource Monitor Collector
+After=network.target
+
+[Service]
+Type=simple
+
+WorkingDirectory=/home/nvidia/22BCE1551/server_dashboard
+
+ExecStart=/home/nvidia/.venv/bin/python /home/nvidia/22BCE1551/server_dashboard/scheduler.py
+
+Restart=always
+RestartSec=5
+
+StandardOutput=append:/home/nvidia/22BCE1551/server_dashboard/logs/collector.log
+StandardError=append:/home/nvidia/22BCE1551/server_dashboard/logs/errors.log
+
+[Install]
+WantedBy=default.target

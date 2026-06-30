@@ -140,7 +140,20 @@ def collect_notebooks():
     ]
 
     df.insert(0, "timestamp", timestamp())
-
+    
+    print("\n=== NOTEBOOK DATA BEING SAVED ===")
+    print(
+        df[
+            [
+                "student",
+                "notebook_name",
+                "kernel_name",
+                "cwd",
+                "status",
+            ]
+        ].to_string(index=False)
+    )
+    
     save_dataframe(df, "notebook_history")
 
 

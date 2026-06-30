@@ -232,22 +232,69 @@ def gpu_card(row):
 
     """
 
-def process_card(row):
+def user_card(row):
 
     student = row["student"] or "Unknown"
 
-    gpu = int(row["gpu"])
+    status = row["status"].capitalize()
+
+    color = "#2ea043"
+
+    if status.lower() == "busy":
+        color = "#d29922"
+
+    elif status.lower() == "dead":
+        color = "#f85149"
+
+    gpu_text = "No GPU"
+
+    if row["gpu_list"]:
+        gpu_text = " • ".join(
+            f"GPU {g}" for g in row["gpu_list"]
+        )
 
     mem = row["gpu_memory"]
+    mem_percent = min(mem / 80000 * 100, 100)
 
     cpu = row["cpu"]
 
-    ram = row["ram"]
+    ram = row["ram"] / 1024
 
-    cmd = row["command"]
+    notebook_html = ""
 
-    if len(cmd) > 45:
-        cmd = cmd[:45] + "..."
+    for notebook in row["notebooks"]:
+        notebook_html += f"""
+        <div class="notebook-item">
+            📓 {notebook}
+        </div>
+        """
+
+    if not notebook_html:
+        notebook_html = """
+        <div class="notebook-item">
+            None
+        </div>
+        """
+
+    folder_html = ""
+
+    for folder in row["folders"]:
+
+        if len(folder) > 55:
+            folder = "..." + folder[-52:]
+
+        folder_html += f"""
+        <div class="folder-item">
+            📁 {folder}
+        </div>
+        """
+
+    if not folder_html:
+        folder_html = """
+        <div class="folder-item">
+            Unknown
+        </div>
+        """
 
     return f"""
 
@@ -257,36 +304,38 @@ def process_card(row):
 
             <div class="process-student">
 
-                {student}
+                👤 {student}
 
             </div>
 
-            <div class="process-gpu">
-
-                GPU {gpu}
-
-            </div>
+            {status_chip(status, color)}
 
         </div>
 
-        <div class="process-memory">
-        
-            <div class="label">
-            
-                GPU Memory
-                
-            </div>
-        
-            {progress_bar(min(mem/80000*100,100))}
-        
-            <div class="gpu-row">
-            
-                <span>{mem:.0f} MB</span>
-                
-            </div>
-        
+        <div class="gpu-row">
+
+            <span>GPU</span>
+
+            <b>{gpu_text}</b>
+
         </div>
-        
+
+        <br>
+
+        <div class="label">
+
+            GPU Memory
+
+        </div>
+
+        {progress_bar(mem_percent)}
+
+        <div class="gpu-row">
+
+            <span>{mem:.0f} MB</span>
+
+        </div>
+
         <div class="gpu-row">
 
             <span>CPU</span>
@@ -299,15 +348,138 @@ def process_card(row):
 
             <span>RAM</span>
 
-            <b>{ram:.0f} MB</b>
+            <b>{ram:.1f} GB</b>
 
         </div>
 
-        <div class="process-command">
+        <div class="gpu-row">
 
-            {cmd}
+            <span>Kernel</span>
+
+            <b>{row['kernel']}</b>
 
         </div>
+
+        <br>
+
+        <div class="section-label">
+
+            Notebooks
+
+        </div>
+
+        {notebook_html}
+
+        <br>
+
+        <div class="section-label">
+
+            Working Folders
+
+        </div>
+
+        {folder_html}
+
+    </div>
+
+    """
+
+# ==========================================================
+# Notebook Session Card
+# ==========================================================
+
+def notebook_card(row):
+
+    student = row["student"] or "Unknown"
+
+    status = row["status"].capitalize()
+
+    notebooks = row["notebooks"]
+
+    folders = row["folders"]
+
+    notebook_html = ""
+
+    if notebooks:
+
+        for notebook in notebooks:
+
+            notebook_html += f"""
+            <div class="notebook-item">
+                📓 {notebook}
+            </div>
+            """
+
+    else:
+
+        notebook_html = """
+        <div class="notebook-item">
+            No active notebooks
+        </div>
+        """
+
+    folder_html = ""
+
+    if folders:
+
+        for folder in folders:
+
+            if len(folder) > 55:
+                folder = "..." + folder[-52:]
+
+            folder_html += f"""
+            <div class="folder-item">
+                📁 {folder}
+            </div>
+            """
+
+    else:
+
+        folder_html = """
+        <div class="folder-item">
+            Unknown
+        </div>
+        """
+
+    color = "#2ea043"
+
+    if status.lower() == "busy":
+        color = "#d29922"
+
+    elif status.lower() == "dead":
+        color = "#f85149"
+
+    return f"""
+
+    <div class="process-card">
+
+        <div class="process-top">
+
+            <div class="process-student">
+
+                👤 {student}
+
+            </div>
+
+            {status_chip(status, color)}
+
+        </div>
+
+        <div class="section-label">
+
+            Active Notebooks
+
+        </div>
+
+        {notebook_html}
+
+        <div class="section-label">
+
+            Working Directories
+
+        </div>
+
+        {folder_html}
 
     </div>
 
