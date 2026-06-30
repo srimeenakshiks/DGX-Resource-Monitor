@@ -33,7 +33,8 @@ def build_summary():
 
     html += metric_card(
         "GPUs",
-        summary["gpus"]
+        summary["gpus"],
+        "gpu-section",
     )
 
     html += metric_card(

@@ -7,6 +7,20 @@ stays clean and easy to maintain.
 
 CSS = """
 
+html{
+
+    scroll-behavior:smooth;
+
+}
+
+.metric-link{
+
+    text-decoration:none;
+
+    color:inherit;
+
+}
+
 /* ============================================================
 GENERAL
 ============================================================ */
@@ -175,6 +189,8 @@ SUMMARY CARDS
     flex-direction:column;
 
     justify-content:center;
+
+    cursor:pointer;
 
 }
 
@@ -418,6 +434,102 @@ CHARTS
 
 }
 
+/* ==========================================================
+PROCESS GRID
+========================================================== */
+
+.process-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(auto-fit,minmax(320px,1fr));
+
+    gap:18px;
+
+    margin-top:20px;
+
+}
+
+.process-card{
+
+    background:#161b22;
+
+    border:1px solid #30363d;
+
+    border-radius:18px;
+
+    padding:18px;
+
+    transition:.25s;
+
+}
+
+.process-card:hover{
+
+    transform:translateY(-4px);
+
+}
+
+.process-top{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    margin-bottom:18px;
+
+}
+
+.process-student{
+
+    font-size:20px;
+
+    font-weight:700;
+
+    color:white;
+
+}
+
+.process-gpu{
+
+    color:#58a6ff;
+
+    font-weight:600;
+
+}
+
+.process-memory{
+
+    margin:14px 0;
+
+}
+
+.process-command{
+
+    margin-top:16px;
+
+    font-size:12px;
+
+    color:#8b949e;
+
+    word-break:break-all;
+
+}
+
+.empty-card{
+
+    padding:30px;
+
+    text-align:center;
+
+    color:#8b949e;
+
+    border:1px dashed #444;
+
+    border-radius:18px;
+
+}
 
 /* ============================================================
 RESPONSIVE

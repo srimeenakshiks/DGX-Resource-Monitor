@@ -50,10 +50,15 @@ def hero_header():
 # Section Header
 # ==========================================================
 
-def section_header(title, subtitle=""):
+def section_header(title, subtitle="", section_id=None):
+
+    anchor = ""
+
+    if section_id:
+        anchor = f'id="{section_id}"'
 
     return f"""
-    <div class="section">
+    <div class="section" {anchor}>
 
         <h2>{title}</h2>
 
@@ -62,27 +67,44 @@ def section_header(title, subtitle=""):
     </div>
     """
 
-
 # ==========================================================
 # Summary Card
 # ==========================================================
 
-def metric_card(title, value):
+def metric_card(title, value, target=None):
+
+    start = ""
+    end = ""
+
+    if target:
+
+        start = f'<a href="#{target}" class="metric-link">'
+
+        end = "</a>"
 
     return f"""
+
+    {start}
+
     <div class="metric">
 
         <div class="metric-number">
+
             {value}
+
         </div>
 
         <div class="metric-label">
+
             {title}
+
         </div>
 
     </div>
-    """
 
+    {end}
+
+    """
 
 # ==========================================================
 # Status Chip
@@ -210,6 +232,86 @@ def gpu_card(row):
 
     """
 
+def process_card(row):
+
+    student = row["student"] or "Unknown"
+
+    gpu = int(row["gpu"])
+
+    mem = row["gpu_memory"]
+
+    cpu = row["cpu"]
+
+    ram = row["ram"]
+
+    cmd = row["command"]
+
+    if len(cmd) > 45:
+        cmd = cmd[:45] + "..."
+
+    return f"""
+
+    <div class="process-card">
+
+        <div class="process-top">
+
+            <div class="process-student">
+
+                {student}
+
+            </div>
+
+            <div class="process-gpu">
+
+                GPU {gpu}
+
+            </div>
+
+        </div>
+
+        <div class="process-memory">
+        
+            <div class="label">
+            
+                GPU Memory
+                
+            </div>
+        
+            {progress_bar(min(mem/80000*100,100))}
+        
+            <div class="gpu-row">
+            
+                <span>{mem:.0f} MB</span>
+                
+            </div>
+        
+        </div>
+        
+        <div class="gpu-row">
+
+            <span>CPU</span>
+
+            <b>{cpu:.1f}%</b>
+
+        </div>
+
+        <div class="gpu-row">
+
+            <span>RAM</span>
+
+            <b>{ram:.0f} MB</b>
+
+        </div>
+
+        <div class="process-command">
+
+            {cmd}
+
+        </div>
+
+    </div>
+
+    """
 
 # ==========================================================
 # Storage Card

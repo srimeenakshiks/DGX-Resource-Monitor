@@ -550,3 +550,77 @@ def get_dashboard_data():
         "storage_history": get_storage_history(),
 
     }
+
+def get_latest_processes():
+
+    return query("""
+
+        SELECT *
+
+        FROM process_history
+
+        WHERE timestamp=(
+
+            SELECT MAX(timestamp)
+
+            FROM process_history
+
+        )
+
+        ORDER BY gpu,
+                 gpu_memory DESC
+
+    """)
+
+# ======================================================
+# ACTIVE NOTEBOOKS
+# ======================================================
+
+def get_active_notebooks():
+
+    notebooks = query("""
+
+        SELECT *
+
+        FROM notebook_history
+
+        WHERE timestamp = (
+
+            SELECT MAX(timestamp)
+
+            FROM notebook_history
+
+        )
+
+    """)
+
+    if notebooks.empty:
+        return pd.DataFrame()
+
+    grouped = []
+
+    for student, group in notebooks.groupby("student"):
+
+        notebook_list = []
+
+        for _, row in group.iterrows():
+
+            notebook = row.get("notebook", "")
+
+            if notebook:
+
+                notebook_list.append(notebook)
+
+        grouped.append({
+
+            "student": student,
+
+            "kernel": group["kernel_name"].iloc[0],
+
+            "status": group["status"].iloc[0],
+
+            "notebooks": notebook_list,
+
+        })
+
+    return pd.DataFrame(grouped)

@@ -85,15 +85,17 @@ def initialize_database():
     
         kernel_id TEXT,
     
+        pid INTEGER,
+    
         student TEXT,
     
-        notebook TEXT,
-    
-        status TEXT,
+        notebook_name TEXT,
     
         kernel_name TEXT,
     
-        type TEXT
+        cwd TEXT,
+    
+        status TEXT
     
     )
     """)

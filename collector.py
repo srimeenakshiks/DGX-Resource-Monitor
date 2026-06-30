@@ -57,6 +57,8 @@ def collect_gpu():
         "Memory Util (%)": "memory_util",
         "Temperature": "temperature",
         "Power (W)": "power",
+        "Notebook Name": "notebook_name",
+        "Kernel Name": "kernel_name",
     })
 
     save_dataframe(df, "gpu_history")
@@ -112,6 +114,12 @@ def collect_notebooks():
         lambda x: str(Path(str(x)).parent)
     )
 
+    df["notebook_name"] = df["Notebook"].apply(
+        lambda x: Path(str(x)).name
+    )
+    
+    df["kernel_name"] = df["Kernel Name"]
+
     df["pid"] = None
 
     df = df.rename(columns={
@@ -124,6 +132,8 @@ def collect_notebooks():
             "kernel_id",
             "pid",
             "student",
+            "notebook_name",
+            "kernel_name",
             "cwd",
             "status",
         ]

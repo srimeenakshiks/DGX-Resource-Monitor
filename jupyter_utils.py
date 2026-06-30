@@ -39,6 +39,7 @@ def get_running_kernels():
 
                 notebook = s.get("notebook", {})
                 path = notebook.get("path", "")
+                notebook_name = os.path.basename(path) if path else ""
 
                 rows.append({
 
@@ -49,6 +50,8 @@ def get_running_kernels():
                     "Execution State": kernel["execution_state"],
 
                     "Notebook": path,
+
+                    "Notebook Name": notebook_name,
 
                     "Type": s.get("type", ""),
 

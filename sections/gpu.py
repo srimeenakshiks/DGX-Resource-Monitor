@@ -17,9 +17,10 @@ def build_gpu_section():
     gpu_df = get_latest_gpu()
 
     html = section_header(
-        "GPU Overview",
-        "Current status of all NVIDIA A100 GPUs"
-    )
+            "GPU Overview",
+            "Current status of all NVIDIA A100 GPUs",
+            "gpu-section",
+        )
 
     html += '<div class="gpu-grid">'
 

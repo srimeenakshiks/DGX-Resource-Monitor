@@ -12,14 +12,21 @@ from styles import CSS
 from sections.header import build_header
 from sections.summary import build_summary
 from sections.gpu import build_gpu_section
+from sections.process import build_process_section
 
 
 def refresh_dashboard():
 
     return (
+    
         build_header(),
+    
         build_summary(),
+    
         build_gpu_section(),
+    
+        build_process_section(),
+    
     )
 
 # ==========================================================
@@ -103,8 +110,8 @@ def create_dashboard():
                 "## Processes"
             )
 
-            process_placeholder = gr.Markdown(
-                "_Coming soon..._"
+            process_section = gr.HTML(
+                build_process_section()
             )
 
         # --------------------------------------------------
@@ -129,6 +136,7 @@ def create_dashboard():
                 header,
                 summary,
                 gpu_section,
+                process_section,
             ],
         )
     
